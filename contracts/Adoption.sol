@@ -1,36 +1,56 @@
 pragma solidity ^0.5.0;
 contract Adoption {
 
-	address[16] public adopters;
-	address payable breeder = 0xBec1d24E7aB6e2419c6C777504502De1E147dD16;
-	uint priceOfDog = 100000000000000000; 
+	address[16] private adopters;
+	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe;
+	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
 
 	//Fallback function to allow the contract to accept ether.
 	constructor () public payable {
 	    //Receive(msg.value);
 	    //balance += msg.value;
 	}
+	
+	event bribeEvent (
+	    address indexed _from,
+	    uint _value
+	);
+	
+	event donationEvent(
+	    address indexed _from,
+	    uint _value
+	);
+
+	event circuitBreakerEvent(
+		address _admin
+	);
 
 	//Adopt a pet
 	function adopt (uint petId) public payable returns (uint){
 		require(petId >= 0 && petId <= 15); //only going to have 15 pets or fewer for sale.
-		//require(msg.value >= priceOfDog); //require the message to 
 		adopters[petId] = msg.sender;
+		return petId;
+	}
+
+	//Admin Only Function - Circuit Breaker
+	function circuitBreak(uint petId) public payable returns (uint) {
+		//require(msg.sender == owner); //allow only owners to initiate a circuit breaker
 		return petId;
 	}
 	
 	//Bribe the breeder to give you the dog you really want
-	function bribe (uint amount) public payable returns  (string memory){
-	    //require (amount <= msg.value);
+	function bribe (uint256 amount) public payable returns  (string memory){
 	    //A bribe of 1 ether or less is not considered sufficient.
 	    require (amount >= 1 ether);
-	    breeder.transfer(1000000000000000000);
+	    breeder.transfer(amount);
+	    emit bribeEvent(msg.sender, amount);
 	    return "Bribe accepted";
 	}
 	
     //Make a tax deductible donation to the shelter. Note, no goods or services will be provided in exchange for the donation.
-	function donate (uint amount) public payable returns  (string memory){
-	    //Make sure that the user doesn't try to donate more money than they have.
+	function donate (uint256 amount) public payable returns  (string memory){
+	    //A donation of 1 gwei or less is not considered sufficient.
+	    require (amount >= 1000000000);
 	    breeder.transfer(amount);
 	    return "Thank you so much for your donation!";
 	}
@@ -41,6 +61,5 @@ contract Adoption {
 	function getAdopters() public view returns (address[16] memory){
 		return adopters;
 	}
-
 
 }

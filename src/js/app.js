@@ -68,6 +68,7 @@ App = {
   bindEvents: function() {
     $(document).on('click', '.btn-adopt', App.handleAdopt);
     $(document).on('click', '.btn-donate', App.handleDonate);
+    $(document).on('click', '.btn-stop', App.initiateCircuitBreaker);
   },
 
   markAdopted: function(adopters, account) {
@@ -85,6 +86,52 @@ App = {
       }
     }).catch(function(err) {
       console.log(err.message);
+    });
+  },
+
+  initiateCircuitBreaker: function() {
+    var adoptionInstance;
+
+    var account = accounts[0];
+    if (account != 0x6D93B6918123De7fD09588722e36eA138a01FB6B){
+      return;
+    }
+
+    App.contracts.Adoption.deployed().then(function(instance) {
+      adoptionInstance = instance;
+
+      return adoptionInstance.getAdopters.call();
+    }).then(function(adopters) {
+      for (i = 0; i < adopters.length; i++) {
+          $('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
+      }
+    }).catch(function(err) {
+      console.log(err.message);
+    });
+  },
+
+  handleCircuitBreaker: function(event) {
+    event.preventDefault();
+    var circuitInstance;
+
+    web3.eth.getAccounts(function(error, accounts) {
+      if (error) {
+        console.log(error);
+      }
+
+      var petId = 2;
+      var account = accounts[0];
+
+      App.contracts.Adoption.deployed().then(function(instance) {
+        circuitInstance = instance;
+
+        // Execute adopt as a transaction by sending account
+        return circuitInstance.circuitBreak(petId);
+      }).then(function(result) {
+        return App.initiateCircuitBreaker();
+      }).catch(function(err) {
+        console.log(err.message);
+      });
     });
   },
 
@@ -109,6 +156,7 @@ App = {
         return adoptionInstance.adopt(petId, {from: account});
       }).then(function(result) {
         return App.markAdopted();
+        //return App.initiateCircuitBreaker();
       }).catch(function(err) {
         console.log(err.message);
       });
@@ -130,16 +178,14 @@ App = {
         donationInstance = instance;
 
         // Execute adopt as a transaction by sending account
-        return donationInstance.bribe(1, {value: 1000000000000000000, from: account});
+        return donationInstance.bribe(1000000000000000000, {value: 1000000000000000000, from: account});
       }).then(function(result) {
         return;
       }).catch(function(err) {
         console.log(err.message);
       });
     });
-  }
-
-
+},
 
 };
 
