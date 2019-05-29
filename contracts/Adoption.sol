@@ -5,6 +5,9 @@ contract Adoption {
 	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe;
 	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
 
+	bool public isActive = true; 
+	uint8 public num = 1;
+
 	//Fallback function to allow the contract to accept ether.
 	constructor () public payable {
 	    //Receive(msg.value);
@@ -30,6 +33,25 @@ contract Adoption {
 		require(petId >= 0 && petId <= 15); //only going to have 15 pets or fewer for sale.
 		adopters[petId] = msg.sender;
 		return petId;
+	}
+
+	//Mark disabled (function for circuit breaker)
+	function markDisabled (uint petId) public returns (uint){
+		require(petId >= 0 && petId <= 15); //only going to have 15 pets or fewer for sale.
+		adopters[petId] = 0x0000000000000000000000000000000000000001;
+		return petId;
+	}
+
+	//Admin Only Function - Circuit Breaker
+	function disable() private returns (bool) {
+		isActive = false;
+		//require(msg.sender == owner); //allow only owners to initiate a circuit breaker
+		return true;
+	}
+
+	function getStatus() external view returns (bool)
+	{
+		return isActive;
 	}
 
 	//Admin Only Function - Circuit Breaker

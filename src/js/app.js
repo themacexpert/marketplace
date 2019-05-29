@@ -73,27 +73,48 @@ App = {
 
   markAdopted: function(adopters, account) {
     var adoptionInstance;
+     web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+
+    var account = accounts[0];
 
     App.contracts.Adoption.deployed().then(function(instance) {
       adoptionInstance = instance;
 
+    var variable= adoptionInstance.num();
+    console.log("isActive " + variable);
+
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters) {
       for (i = 0; i < adopters.length; i++) {
+        //if ()
+
         if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
           $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
         }
+
       }
     }).catch(function(err) {
       console.log(err.message);
     });
+  });
   },
 
   initiateCircuitBreaker: function() {
     var adoptionInstance;
 
+    web3.eth.getAccounts(function(error, accounts) {
+        if (error) {
+          console.log(error);
+        }
+
     var account = accounts[0];
-    if (account != 0x6D93B6918123De7fD09588722e36eA138a01FB6B){
+    var owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
+    if (account != owner){
+      console.log("You are not the owner of this application and do not have access to admin functions");
+      alert("You are not the owner of this application and do not have access to admin functions");
       return;
     }
 
@@ -103,11 +124,16 @@ App = {
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters) {
       for (i = 0; i < adopters.length; i++) {
-          $('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
+          if (adopters[i] == '0x0000000000000000000000000000000000000000') {
+            adopters[i] = '0x0000000000000000000000000000000000000001';
+            $('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
+        }
+          //$('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
       }
     }).catch(function(err) {
       console.log(err.message);
     });
+  });
   },
 
   handleCircuitBreaker: function(event) {
