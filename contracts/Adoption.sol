@@ -1,6 +1,10 @@
 pragma solidity ^0.5.0;
+//import library to prevent integer underflow / overflow.
+import "./SafeMath.sol";
+
 contract Adoption {
 
+	using SafeMath for uint;
 	address[16] private adopters;
 	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe;
 	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
