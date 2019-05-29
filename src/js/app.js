@@ -83,8 +83,8 @@ App = {
     App.contracts.Adoption.deployed().then(function(instance) {
       adoptionInstance = instance;
 
-    var variable= adoptionInstance.num();
-    console.log("isActive " + variable);
+    // var variable= adoptionInstance.num();
+    // console.log("isActive " + variable);
 
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters) {

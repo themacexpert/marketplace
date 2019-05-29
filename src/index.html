@@ -34,6 +34,10 @@
       background-image: url('images/1_pay_mm_off.png');
     }
 
+    .buttonContainer{
+      text-align: center;
+    }
+
     </style>
 
   </head>
@@ -42,12 +46,42 @@
       <div class="row">
         <div class="col-xs-12 col-sm-8 col-sm-push-2">
           <h1 class="text-center">Kevin's Pet Shop</h1>
+          <div class = "buttonContainer">
             <div id="buttonsRow" class="row">
         <!-- Buttons Load Here -->
-                 <div class="tip-button"></div>
-                 <button class="btn btn-default btn-stop" type="button" data-id="0">Stop</button>
+                 <div class="tip-button" margin="auto"></div>
+                 <div class="address-container">
+                     <strong>    User Address</strong>: <div class="actual-address" id="theaddress"></div>
+                     <script>
+                        window.addEventListener('load', function() {
+                        document.getElementById("theaddress").innerHTML = web3.eth.accounts[0]
+                      }, 100);
+                    </script>
+                  </div><br>
+                  <div class="balance-container">
+                     <strong>    Balance</strong>: <div class="actual-address" id="theBalance"></div>
+                     <script>
+                        window.addEventListener('load', function() {
+                        var address, wei, balance
+                            address = web3.eth.accounts[0]
+                            //Source for the below try/catch block: https://github.com/shawntabrizi/ethbalance/blob/master/index.html
+                            try {
+                                web3.eth.getBalance(address, function (error, wei) {
+                                    if (!error) {
+                                        var balance = web3.fromWei(wei, 'ether');
+                                        document.getElementById("theBalance").innerHTML = balance + " ETH";
+                                    }
+                                });
+                            } catch (err) {
+                                document.getElementById("theBalance").innerHTML = err;
+                            }
+                      }, 100);
+                    </script>
+                  </div><br>
+                 <button class="btn btn-default btn-stop" type="button" data-id="0">Stop</button>&nbsp;
                  <button class="btn btn-default btn-re-enable" type="button" onclick="window.location.reload();" data-id="0">Re-engage</button>
             </div>
+          </div>
          
           <!-- <button class="btn btn-default tip-button" type="button" data-id="0">Donate</button> -->
           <hr/>
