@@ -182,7 +182,6 @@ App = {
         return adoptionInstance.adopt(petId, {from: account});
       }).then(function(result) {
         return App.markAdopted();
-        //return App.initiateCircuitBreaker();
       }).catch(function(err) {
         console.log(err.message);
       });
