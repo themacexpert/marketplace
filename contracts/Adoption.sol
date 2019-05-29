@@ -7,10 +7,10 @@ contract Adoption {
 
 	//using SafeMath for uint;
 	address[16] public adopters;
-	//address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe; //Metamask breeder
-	address payable private breeder = 0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C; //Remix breeder
-	//address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B; //Metamask owner
-	address owner = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c; //Remix owner
+	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe; //Metamask breeder
+	//address payable private breeder = 0x14723A09ACff6D2A60DcdF7aA4AFf308FDDC160C; //Remix breeder
+	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B; //Metamask owner
+	//address owner = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c; //Remix owner
 	
 	uint256 private constant minimum_donation = 1000000000;
 	bool private isActive = true; 
@@ -47,7 +47,7 @@ contract Adoption {
       * @return petId the id of the successfully adopted pet.
       */
 	function adopt (uint petId) public payable returns (uint){
-	    require (isActive == true);
+	    //require (isActive == true);
 		require(petId >= 0 && petId <= 15); //only going to have 15 pets or fewer for sale.
 		adopters[petId] = msg.sender;
 		return petId;
