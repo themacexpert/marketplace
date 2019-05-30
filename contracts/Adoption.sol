@@ -5,7 +5,7 @@ import "./SafeMath.sol";
 contract Adoption {
 
 	using SafeMath for uint;
-	address[16] private adopters;
+	address[16] public adopters;
 	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe;
 	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
 
@@ -18,15 +18,17 @@ contract Adoption {
 	    //balance += msg.value;
 	}
 	
-	event bribeEvent (
-	    address indexed _from,
-	    uint _value
-	);
+	// event bribeEvent (
+	//     address indexed _from,
+	//     uint _value
+	// );
 	
 	event donationEvent(
 	    address indexed _from,
 	    uint _value
 	);
+
+	//test
 
 	event circuitBreakerEvent(
 		address _admin
@@ -47,8 +49,15 @@ contract Adoption {
 	}
 
 	//Admin Only Function - Circuit Breaker
-	function disable() private returns (bool) {
+	function disable() public returns (bool) {
 		isActive = false;
+		//require(msg.sender == owner); //allow only owners to initiate a circuit breaker
+		return true;
+	}
+
+	//Admin Only Function - Circuit Breaker
+	function enable() public returns (bool) {
+		isActive = true;
 		//require(msg.sender == owner); //allow only owners to initiate a circuit breaker
 		return true;
 	}
@@ -69,7 +78,7 @@ contract Adoption {
 	    //A bribe of 1 ether or less is not considered sufficient.
 	    require (amount >= 1 ether);
 	    breeder.transfer(amount);
-	    emit bribeEvent(msg.sender, amount);
+	    //emit bribeEvent(msg.sender, amount);
 	    return "Bribe accepted";
 	}
 	
