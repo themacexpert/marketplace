@@ -1,0 +1,10 @@
+The contract is live on the Ropsten Testnet.
+https://ropsten.etherscan.io/tx/0xe9c4bd6dfc41767073a2c4661e543c62d2c204f23a0a95895de904c57ebe1d0b
+Contract Address: 0xcaea22097a90c94d5d5a9efc9bdb12c435c88da8
+Created from My Ropsten TestNet Address: 0xf55fad15356762b3f7c3e9b62f1fe192ffe6ff1e
+
+Adopting PetId #2 on the Ropsten Network:
+https://ropsten.etherscan.io/tx/0xbfc797b419d755e6d9c1758e46a6478a91eef2ef6a9e293446d2c6e9b611415c
+
+Adopting PetId #6 on the Ropsten Network:
+https://ropsten.etherscan.io/tx/0x36fea834f57b5d7254898fa77f214f310e95705b8c45d6113cadcfc443d84068

@@ -1,0 +1,23 @@
+kevin-neilsons-macbook-pro-2:petshop developer$ truffle test
+Using network 'development'.
+
+
+Compiling your contracts...
+===========================
+> Compiling ./test/TestAdoption.sol
+> Artifacts written to /var/folders/v0/s83w_zv55n789yg8xhgyczr40000gr/T/test-119429-24817-1p8z4xg.00gth
+> Compiled successfully using:
+   - solc: 0.5.0+commit.1d4f565a.Emscripten.clang
+
+
+
+  TestAdoption
+    ✓ testUserCanAdoptPet (76ms)
+    ✓ testGetAdopterAddressByPetId (62ms)
+    ✓ testGetAdopterAddressByPetIdInArray (78ms)
+    ✓ testGetStatusFunctionality (62ms)
+    ✓ testGetStatusAfterDisabledFunctionality (60ms)
+    ✓ testGetStatusAfterEnabledFunctionality (68ms)
+
+
+  6 passing (7s)
