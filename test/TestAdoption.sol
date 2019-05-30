@@ -14,6 +14,9 @@ contract TestAdoption {
 	//The expted owner of adopted pet is this contract.
 	address expectedAdopter = address(this);
 
+	bool expectedStatus = true;
+	bool expectedStatusAfterDisabled = false;
+
 	//Test the adopt function
 	function testUserCanAdoptPet() public {
 		uint returnedId = adoption.adopt(expectedPetId);
@@ -34,6 +37,27 @@ contract TestAdoption {
 		address[16] memory adopters = adoption.getAdopters();
 
 		Assert.equal(adopters[expectedPetId], expectedAdopter, "Owner of the expected pet should be this contract.");
+	}
+
+	//Test the getStatus Function - expecting a true boolean
+	function testGetStatusFunctionality() public {
+		bool returnedStatus = adoption.getStatus();
+
+		Assert.equal(returnedStatus, expectedStatus, "Status returned should be true to indicate active contract.");
+	}
+
+	//Test the disable function - expecting a false boolean to be return by getStatus.
+	function testGetStatusAfterDisabledFunctionality() public {
+		adoption.disable();
+		bool returnedStatus = adoption.getStatus();
+		Assert.equal(returnedStatus, expectedStatusAfterDisabled, "Status returned should be false to indicate circuit breaker activated.");
+	}
+
+	//Test the enable function - expecting a false boolean to be return by getStatus.
+	function testGetStatusAfterEnabledFunctionality() public {
+		adoption.enable();
+		bool returnedStatus = adoption.getStatus();
+		Assert.equal(returnedStatus, expectedStatus, "Status returned should be true to indicate circuit breaker deactivated.");
 	}
 
 }
