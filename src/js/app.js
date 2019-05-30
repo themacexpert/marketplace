@@ -136,31 +136,6 @@ App = {
   });
   },
 
-  handleCircuitBreaker: function(event) {
-    event.preventDefault();
-    var circuitInstance;
-
-    web3.eth.getAccounts(function(error, accounts) {
-      if (error) {
-        console.log(error);
-      }
-
-      var petId = 2;
-      var account = accounts[0];
-
-      App.contracts.Adoption.deployed().then(function(instance) {
-        circuitInstance = instance;
-
-        // Execute adopt as a transaction by sending account
-        return circuitInstance.circuitBreak(petId);
-      }).then(function(result) {
-        return App.initiateCircuitBreaker();
-      }).catch(function(err) {
-        console.log(err.message);
-      });
-    });
-  },
-
   handleAdopt: function(event) {
     event.preventDefault();
 
