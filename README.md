@@ -2,6 +2,9 @@
 
 This smart contract application is an extension of the Truffle petshop tutorial. I have added additional features and extended the capability of the original program with an eye towards incorporating typical smart contract best practices and robust design patterns. 
 
+### Video Walkthrough
+https://drive.google.com/file/d/1epzu9kzayynrrdXuNlFIavzdnGqlL1Xr/view
+
 ### How to Run
 To run the program, you can use a locally running blockchain on Ganache. In your first terminal window, use command npm run dev to start the web interface. In a second terminal window you can run the commands "truffle develop" and then simply "migrate." I used localhost 127.0.0.1:9545. My application uses hard-coded Ethereum testnet addresses, which you can change to addresses running locally on your machine should you prefer. 
 
