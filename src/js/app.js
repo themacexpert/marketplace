@@ -79,18 +79,14 @@ App = {
         }
 
     var account = accounts[0];
+    console.log(account);
 
     App.contracts.Adoption.deployed().then(function(instance) {
       adoptionInstance = instance;
 
-    // var variable= adoptionInstance.num();
-    // console.log("isActive " + variable);
-
       return adoptionInstance.getAdopters.call();
     }).then(function(adopters) {
       for (i = 0; i < adopters.length; i++) {
-        //if ()
-
         if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
           $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
         }
@@ -125,10 +121,8 @@ App = {
     }).then(function(adopters) {
       for (i = 0; i < adopters.length; i++) {
           if (adopters[i] == '0x0000000000000000000000000000000000000000') {
-            adopters[i] = '0x0000000000000000000000000000000000000001';
             $('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
         }
-          //$('.panel-pet').eq(i).find('button').text('Unavailable').attr('disabled', true);
       }
     }).catch(function(err) {
       console.log(err.message);

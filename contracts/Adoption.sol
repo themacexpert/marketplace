@@ -2,6 +2,7 @@ pragma solidity ^0.5.0;
 //import library to prevent integer underflow / overflow.
 import "./SafeMath.sol";
 
+/** @title Adoption contract for Kevin's Pet Shop. */
 contract Adoption {
 
 	using SafeMath for uint;
@@ -9,6 +10,7 @@ contract Adoption {
 	address payable private breeder = 0xEe4549980CfFD3834ddFa97FC043fcc8fFB20CEe;
 	address owner = 0x6D93B6918123De7fD09588722e36eA138a01FB6B;
 
+	uint256 private constant minimum_donation = 1000000000;
 	bool public isActive = true; 
 
 	//Fallback function to allow the contract to accept ether.
@@ -23,8 +25,13 @@ contract Adoption {
 	);
 
 	event circuitBreakerEvent(
-		address _admin
+		uint256 _blockNumber
 	);
+	
+	modifier onlyOwner(){
+	    require(msg.sender == owner);
+	    _;
+	}
 
 	/** @dev Marks a pet as adopted with the msg.sender as the new owner.
 	  * @dev isActive circuitBreaker must be == true in order for function to execute. 
@@ -32,6 +39,7 @@ contract Adoption {
       * @return petId the id of the successfully adopted pet.
       */
 	function adopt (uint petId) public payable returns (uint){
+	    //require (isActive == true);
 		require(petId >= 0 && petId <= 15); //only going to have 15 pets or fewer for sale.
 		adopters[petId] = msg.sender;
 		return petId;
@@ -81,12 +89,11 @@ contract Adoption {
       */
 	function donate (uint256 amount) public payable returns  (string memory){
 	    //A donation of 1 gwei or less is not considered sufficient.
-	    require (amount >= 1000000000);
+	    require (amount >= minimum_donation);
 	    breeder.transfer(amount);
 	    return "Thank you so much for your donation!";
 	}
 	
-
 	/** @dev Retrieve a list of the adopters.
       * @return adopters a list of the new owners of the pets.
       */
